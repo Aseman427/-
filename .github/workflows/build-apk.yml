@@ -27,22 +27,33 @@ jobs:
         run: |
           sdkmanager "platforms;android-35" "build-tools;35.0.0"
 
-      - name: Install Gradle
+      - name: Setup Gradle
         uses: gradle/actions/setup-gradle@v4
         with:
           gradle-version: '8.7'
 
-      - name: Extract Mehrab project
+      - name: Extract project
         run: |
-          mkdir mehrab_project
-          unzip -o "Mehrab_Android_Full_v1.1.zip" -d mehrab_project
+          rm -rf mehrab
+          mkdir mehrab
+          unzip -q "Mehrab_Android_Full_v1.1.zip" -d mehrab
+          echo "=== Extracted files ==="
+          find mehrab -maxdepth 4 -type f | head -100
+
+      - name: Find Android project
+        run: |
+          PROJECT=$(find mehrab -name settings.gradle -type f -print -quit | xargs dirname)
+          echo "PROJECT=$PROJECT" >> $GITHUB_ENV
+          echo "Android project found at: $PROJECT"
 
       - name: Build APK
-        working-directory: mehrab_project
-        run: gradle assembleDebug --no-daemon
+        run: |
+          cd "$PROJECT"
+          gradle assembleDebug --no-daemon
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
         with:
           name: Mehrab-APK
-          path: mehrab_project/app/build/outputs/apk/debug/app-debug.apk
+          path: "${{ env.PROJECT }}/app/build/outputs/apk/debug/app-debug.apk"
+          if-no-files-found: error
