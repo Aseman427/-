@@ -1,0 +1,1 @@
+<resources><style name="Theme.Mehrab" parent="android:style/Theme.Material.Light.NoActionBar"><item name="android:fontFamily">sans</item><item name="android:colorAccent">#5B35D5</item><item name="android:statusBarColor">#171C4D</item><item name="android:navigationBarColor">#F6F7FB</item><item name="android:windowLightStatusBar">false</item></style></resources>

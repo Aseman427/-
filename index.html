@@ -1,0 +1,116 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#5b35d5">
+<title>مهراب | حسابداری هوشمند</title>
+<style>
+:root{--p:#5b35d5;--p2:#7b55e8;--bg:#f5f6fb;--card:#fff;--text:#17152a;--muted:#77748a;--green:#18b77a;--red:#ed5c68;--line:#eceaf2;--shadow:0 12px 35px #29204d12}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);font-family:Tahoma,Arial,sans-serif;color:var(--text)}
+button,input,select{font:inherit}button{cursor:pointer;border:0}
+.app{max-width:460px;min-height:100vh;margin:auto;background:var(--bg);position:relative;padding-bottom:88px}
+.screen{display:none;padding:20px}.screen.active{display:block}
+.welcome{min-height:100vh;padding:30px;display:flex;flex-direction:column;justify-content:center;text-align:center;color:#fff;background:linear-gradient(150deg,#161c4d,#3c267e 55%,#6e45e7)}
+.logo{font-size:58px;font-weight:900;letter-spacing:-5px}.welcome h1{font-size:36px;margin:12px 0}.welcome p{color:#ddd9ef;line-height:2}.dots{margin:35px}.dots i{display:inline-block;width:9px;height:9px;background:#77709b;border-radius:50%;margin:5px}.dots i:first-child{background:#fff}
+.primary{background:linear-gradient(90deg,var(--p),var(--p2));color:#fff;border-radius:16px;padding:15px 22px;font-weight:700;box-shadow:0 10px 22px #5b35d535}
+.ghost{background:transparent;color:#fff;padding:14px}.top{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}.top h2{margin:0}.icon{background:var(--card);border:1px solid var(--line);width:42px;height:42px;border-radius:13px}
+.balance{background:linear-gradient(135deg,#5330c9,#7650e6);color:#fff;border-radius:22px;padding:20px;box-shadow:var(--shadow)}.balance small{opacity:.8}.amount{font-size:26px;font-weight:800;margin:12px 0}
+.grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin:15px 0}.quick{background:var(--card);border:1px solid var(--line);padding:14px 5px;border-radius:16px;text-align:center;font-size:12px}.quick b{display:block;font-size:22px;margin-bottom:7px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:17px;margin:14px 0;box-shadow:var(--shadow)}.row{display:flex;justify-content:space-between;align-items:center;padding:13px 0;border-bottom:1px solid var(--line)}.row:last-child{border:0}
+.green{color:var(--green)}.red{color:var(--red)}.purple{color:var(--p)}.muted{color:var(--muted);font-size:12px}
+.field{margin:13px 0}.field label{display:block;font-size:12px;color:var(--muted);margin-bottom:7px}.field input,.field select{width:100%;padding:14px;border:1px solid var(--line);border-radius:14px;background:#fff;outline:none}.field input:focus,.field select:focus{border-color:var(--p)}
+.types{display:grid;grid-template-columns:repeat(4,1fr);gap:8px}.type{padding:13px 5px;border:1px solid var(--line);background:#fff;border-radius:13px;text-align:center}.type.sel{border:2px solid var(--p);color:var(--p);background:#f5f1ff}
+.chart{height:180px;display:flex;align-items:end;gap:10px;padding:20px 10px 10px}.bar{flex:1;background:linear-gradient(#7b55e8,#4e2fc1);border-radius:8px 8px 3px 3px;min-height:20px;position:relative}.bar span{position:absolute;bottom:-22px;right:50%;transform:translateX(50%);font-size:10px;color:var(--muted)}
+.stats{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}.stat{background:#fff;border:1px solid var(--line);border-radius:15px;padding:12px;text-align:center}.stat b{display:block;font-size:15px;margin-top:7px}
+.bottom{position:fixed;bottom:0;left:50%;transform:translateX(-50%);width:min(460px,100%);height:76px;background:#fff;border-top:1px solid var(--line);display:flex;justify-content:space-around;align-items:center;z-index:5}.nav{background:none;color:var(--muted);font-size:11px}.nav.active{color:var(--p);font-weight:700}.plus{width:54px;height:54px;border-radius:50%;background:var(--p);color:#fff;font-size:30px;box-shadow:0 8px 20px #5b35d555;margin-top:-25px}
+.toast{position:fixed;top:20px;left:50%;transform:translateX(-50%);background:#17152a;color:#fff;padding:12px 18px;border-radius:12px;display:none;z-index:10}
+</style>
+</head>
+<body>
+<div class="app">
+
+<section id="welcome" class="screen active welcome">
+  <div class="logo">M</div><h1>مهراب</h1>
+  <p>نرم‌افزار حسابداری هوشمند<br>مدیریت مالی کسب‌وکار، ساده و دقیق</p>
+  <div class="dots"><i></i><i></i><i></i></div>
+  <button class="primary" onclick="show('home')">شروع کنید</button>
+  <button class="ghost" onclick="show('home')">قبلاً حساب کاربری دارم</button>
+</section>
+
+<section id="home" class="screen">
+  <div class="top"><button class="icon" onclick="toast('منوی مهراب')">☰</button><div><b>مهراب</b><div class="muted">خوش آمدید 👋</div></div><button class="icon">🔔</button></div>
+  <div class="balance"><small>جمع موجودی حساب‌ها</small><div class="amount" id="balance">۱۲,۴۵۰,۰۰۰ تومان</div><small>آخرین بروزرسانی: امروز ۰۹:۳۰</small></div>
+  <div class="grid">
+    <button class="quick" onclick="show('entry');pick('دریافت')"><b>↓</b>دریافت</button>
+    <button class="quick" onclick="show('entry');pick('پرداخت')"><b>↑</b>پرداخت</button>
+    <button class="quick" onclick="show('entry');pick('خرید')"><b>🛒</b>فاکتور خرید</button>
+    <button class="quick" onclick="show('entry');pick('فروش')"><b>🏷</b>فاکتور فروش</button>
+  </div>
+  <div class="card"><div class="top"><b>خلاصه وضعیت مالی</b><span class="muted">این ماه</span></div>
+    <div class="row"><span>جمع درآمدها</span><b class="green">۸۵,۲۰۰,۰۰۰</b></div>
+    <div class="row"><span>جمع هزینه‌ها</span><b class="red">۴۲,۷۰۰,۰۰۰</b></div>
+    <div class="row"><span>سود خالص</span><b class="purple">۴۲,۵۰۰,۰۰۰ تومان</b></div>
+  </div>
+  <div class="card"><b>حساب‌های پرکاربرد</b>
+    <div class="row"><span>🏦 بانک ملت<br><small class="muted">حساب بانکی</small></span><b>۳,۲۰۰,۰۰۰</b></div>
+    <div class="row"><span>👛 صندوق اصلی</span><b>۸,۷۵۰,۰۰۰</b></div>
+  </div>
+</section>
+
+<section id="entry" class="screen">
+  <div class="top"><button class="icon" onclick="show('home')">→</button><h2>ثبت اطلاعات جدید</h2><span></span></div>
+  <div class="card"><div class="types">
+    <button class="type sel" onclick="pick('دریافت',this)">↓<br>دریافت</button>
+    <button class="type" onclick="pick('پرداخت',this)">↑<br>پرداخت</button>
+    <button class="type" onclick="pick('انتقال',this)">⇄<br>انتقال</button>
+    <button class="type" onclick="pick('فاکتور',this)">▣<br>فاکتور</button>
+  </div>
+  <div class="field"><label>حساب مبدا</label><select><option>بانک ملت</option><option>صندوق اصلی</option><option>حساب جاری</option></select></div>
+  <div class="field"><label>طرف حساب / مشتری</label><input placeholder="انتخاب یا افزودن مشتری"></div>
+  <div class="field"><label>مبلغ (تومان)</label><input id="amount" type="number" placeholder="۰"></div>
+  <div class="field"><label>شرح</label><input placeholder="توضیحات را وارد کنید..."></div>
+  <div class="field"><label>تاریخ</label><input value="۱۴۰۳/۰۳/۲۷"></div>
+  <button class="primary" style="width:100%" onclick="saveEntry()">ثبت اطلاعات</button></div>
+</section>
+
+<section id="reports" class="screen">
+  <div class="top"><button class="icon" onclick="show('home')">→</button><h2>گزارش‌ها</h2><button class="icon">⚙</button></div>
+  <div class="card"><div class="top"><b>گزارش مالی ماهانه</b><button class="icon">⌄</button></div>
+    <div class="muted">مقایسه درآمد، هزینه و سود</div>
+    <div class="chart"><div class="bar" style="height:65%"><span>فروردین</span></div><div class="bar" style="height:82%"><span>اردیبهشت</span></div><div class="bar" style="height:58%"><span>خرداد</span></div><div class="bar" style="height:92%"><span>تیر</span></div><div class="bar" style="height:75%"><span>مرداد</span></div></div>
+  </div>
+  <div class="stats"><div class="stat green">درآمد<b>۸۵.۲M</b></div><div class="stat red">هزینه<b>۴۲.۷M</b></div><div class="stat purple">سود خالص<b>۴۲.۵M</b></div></div>
+  <div class="card"><b>گزارش‌های پرکاربرد</b>
+    <div class="row"><span>📈 گزارش سود و زیان</span><b>‹</b></div><div class="row"><span>⚖ گزارش ترازنامه</span><b>‹</b></div><div class="row"><span>📊 گزارش گردش حساب</span><b>‹</b></div><div class="row"><span>▣ گزارش فاکتورها</span><b>‹</b></div>
+  </div>
+</section>
+
+<section id="more" class="screen">
+  <div class="top"><button class="icon" onclick="show('home')">→</button><h2>بیشتر</h2><span></span></div>
+  <div class="card">
+    <div class="row"><span>👥 مشتریان و طرف حساب‌ها</span><b>‹</b></div>
+    <div class="row"><span>📦 کالا و خدمات</span><b>‹</b></div>
+    <div class="row"><span>🧾 فاکتورها</span><b>‹</b></div>
+    <div class="row"><span>🏦 حساب‌های بانکی</span><b>‹</b></div>
+    <div class="row"><span>⚙ تنظیمات</span><b>‹</b></div>
+  </div>
+</section>
+
+<nav class="bottom" id="nav" style="display:none">
+ <button class="nav active" onclick="show('home')">⌂<br>خانه</button>
+ <button class="nav" onclick="show('home')">▣<br>حساب‌ها</button>
+ <button class="plus" onclick="show('entry')">+</button>
+ <button class="nav" onclick="show('reports')">▥<br>گزارش‌ها</button>
+ <button class="nav" onclick="show('more')">•••<br>بیشتر</button>
+</nav>
+<div class="toast" id="toast"></div>
+</div>
+<script>
+const ids=['welcome','home','entry','reports','more'];
+function show(id){ids.forEach(x=>document.getElementById(x).classList.toggle('active',x===id));document.getElementById('nav').style.display=id==='welcome'?'none':'flex';scrollTo(0,0)}
+function toast(t){let e=document.getElementById('toast');e.textContent=t;e.style.display='block';setTimeout(()=>e.style.display='none',1800)}
+function pick(name,el){document.querySelectorAll('.type').forEach(x=>x.classList.remove('sel'));if(el)el.classList.add('sel');toast('نوع عملیات: '+name)}
+function saveEntry(){let a=document.getElementById('amount').value;if(!a){toast('لطفاً مبلغ را وارد کنید');return}toast('اطلاعات با موفقیت ثبت شد ✓');setTimeout(()=>show('home'),700)}
+</script>
+</body></html>
